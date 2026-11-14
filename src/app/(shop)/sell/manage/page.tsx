@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { SafeImage } from "@/components/common/SafeImage";
 import { ProductStatusBadge } from "@/components/common/StatusBadge";
 import { deleteProduct, fetchProducts, updateProductStatus } from "@/lib/api/products";
 import { readUser } from "@/lib/auth/session";
@@ -60,10 +61,9 @@ export default function SellManagePage() {
       <div className="space-y-3">
         {visible.map((item) => (
           <div key={item.id} className="panel flex flex-wrap items-center gap-4 p-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <SafeImage
               src={item.media[0]?.url}
-              alt=""
+              alt={item.title}
               className="h-20 w-20 rounded-lg object-cover"
             />
             <div className="min-w-0 flex-1">
@@ -75,6 +75,12 @@ export default function SellManagePage() {
                 <span>{formatUsd(item.price)}</span>
               </div>
             </div>
+            <Link
+              href={`/sell/${item.id}/edit`}
+              className={`btn btn-ghost ${item.status === "SOLD" ? "pointer-events-none opacity-40" : ""}`}
+            >
+              Edit
+            </Link>
             <select
               className="input w-auto"
               value={item.status}
