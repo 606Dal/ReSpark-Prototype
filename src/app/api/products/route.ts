@@ -28,10 +28,19 @@ export async function GET(request: Request) {
   }
   if (sellerUuid) list = list.filter((p) => p.userUuid === sellerUuid);
 
+  const min = searchParams.get("minPrice");
+  const max = searchParams.get("maxPrice");
+  if (min) list = list.filter((p) => p.price >= Number(min));
+  if (max) list = list.filter((p) => p.price <= Number(max));
+  // Default catalog excludes SOLD unless explicitly requested
+  if (!status) list = list.filter((p) => p.status !== "SOLD");
+
   list = [...list].sort((a, b) => {
     switch (sort) {
-      case "popular":
-        return b.likeCount - a.likeCount;
+      case "popular": {
+        const wish = b.likeCount - a.likeCount;
+        return wish !== 0 ? wish : b.viewCount - a.viewCount;
+      }
       case "price_asc":
         return a.price - b.price;
       case "price_desc":
@@ -54,8 +63,9 @@ export async function POST(request: Request) {
   if (!body.description || body.description.trim().length < 10) {
     return fail("Description must be at least 10 characters.");
   }
-  if (body.price == null || body.price < 0 || body.price > 1_000_000_000) {
-    return fail("Price must be between 0 and 1,000,000,000.");
+  // Requirements v2: USD 0–100 (C-04 noted vs SQL BIGINT)
+  if (body.price == null || body.price < 0 || body.price > 100) {
+    return fail("Price must be between 0 and 100 USD (requirements v2).");
   }
   if (!body.sellerUuid) return fail("sellerUuid is required.");
 
@@ -88,7 +98,7 @@ export async function POST(request: Request) {
         fileType: "IMAGE",
         fileName: `/mock/new-${id}.jpg`,
         fileSize: 120_000,
-        url: `https://picsum.photos/seed/respark-new-${id}/640/640`,
+        url: `/products/p-${101 + (id % 6)}.svg`,
       },
     ],
     sellerNickname: seller.nickname,

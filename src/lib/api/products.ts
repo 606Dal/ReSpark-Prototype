@@ -8,6 +8,8 @@ export type ProductListParams = {
   categoryId?: string;
   sort?: "latest" | "popular" | "price_asc" | "price_desc";
   sellerUuid?: string;
+  minPrice?: string;
+  maxPrice?: string;
 };
 
 export async function fetchProducts(params: ProductListParams = {}) {
@@ -46,6 +48,23 @@ export async function updateProductStatus(
   return apiFetch<Product>(`/api/products/${id}`, {
     method: "PATCH",
     body: JSON.stringify({ status }),
+  });
+}
+
+export async function updateProduct(
+  id: number,
+  input: Partial<{
+    title: string;
+    description: string;
+    price: number;
+    deliveryFee: boolean;
+    categoryIds: number[];
+    status: Product["status"];
+  }>
+) {
+  return apiFetch<Product>(`/api/products/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(input),
   });
 }
 

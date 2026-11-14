@@ -18,13 +18,32 @@ export async function PATCH(request: Request, context: Ctx) {
   const product = getProductById(Number(id));
   if (!product) return fail("Product not found.", 404);
 
-  const body = (await request.json()) as { status?: ProductStatus };
+  if (product.status === "SOLD") {
+    return fail("Sold products cannot be modified.");
+  }
+
+  const body = (await request.json()) as {
+    status?: ProductStatus;
+    title?: string;
+    description?: string;
+    price?: number;
+    deliveryFee?: boolean;
+    categoryIds?: number[];
+  };
+
   if (body.status) {
-    if (product.status === "SOLD" && body.status !== "SOLD") {
-      return fail("Sold products cannot be modified.");
-    }
     product.status = body.status;
   }
+  if (typeof body.title === "string") product.title = body.title;
+  if (typeof body.description === "string") product.description = body.description;
+  if (typeof body.price === "number") {
+    if (body.price < 0 || body.price > 100) {
+      return fail("Price must be USD 0–100 (requirements v2).");
+    }
+    product.price = body.price;
+  }
+  if (typeof body.deliveryFee === "boolean") product.deliveryFee = body.deliveryFee;
+  if (Array.isArray(body.categoryIds)) product.categoryIds = body.categoryIds;
 
   return ok(product, "Product updated (mock)");
 }

@@ -26,9 +26,15 @@ export async function POST(request: Request) {
     (w) => w.userUuid === body.userUuid && w.productId === body.productId
   );
 
+  const product = store.products.find((p) => p.id === body.productId && !p.deleted);
+
   if (existing) {
     store.wishlist = store.wishlist.filter((w) => w.id !== existing.id);
-    return ok({ wished: false, item: null }, "Removed from wishlist");
+    if (product && product.likeCount > 0) product.likeCount -= 1;
+    return ok(
+      { wished: false, item: null, likeCount: product?.likeCount ?? 0 },
+      "Removed from wishlist"
+    );
   }
 
   const item = {
@@ -37,5 +43,9 @@ export async function POST(request: Request) {
     productId: body.productId,
   };
   store.wishlist.push(item);
-  return ok({ wished: true, item: enrichWish(item) }, "Added to wishlist");
+  if (product) product.likeCount += 1;
+  return ok(
+    { wished: true, item: enrichWish(item), likeCount: product?.likeCount ?? 0 },
+    "Added to wishlist"
+  );
 }

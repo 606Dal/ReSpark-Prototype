@@ -6,8 +6,11 @@ export async function fetchWishlist(userUuid: string) {
 }
 
 export async function toggleWishlist(userUuid: string, productId: number) {
-  return apiFetch<{ wished: boolean; item: WishItem | null }>("/api/wishlist", {
-    method: "POST",
-    body: JSON.stringify({ userUuid, productId }),
-  });
+  return apiFetch<{ wished: boolean; item: WishItem | null; likeCount?: number }>(
+    "/api/wishlist",
+    {
+      method: "POST",
+      body: JSON.stringify({ userUuid, productId }),
+    }
+  );
 }
