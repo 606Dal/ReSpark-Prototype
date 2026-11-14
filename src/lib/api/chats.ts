@@ -5,10 +5,21 @@ export async function fetchChats() {
   return apiFetch<ChatRoom[]>("/api/chats");
 }
 
-export async function createChat(productId: number) {
+export async function createChat(productId: number, buyerUuid?: string) {
   return apiFetch<ChatRoom>("/api/chats", {
     method: "POST",
-    body: JSON.stringify({ productId }),
+    body: JSON.stringify({ productId, buyerUuid }),
+  });
+}
+
+export async function patchChat(
+  chatId: number | string,
+  action: string,
+  actorId?: number
+) {
+  return apiFetch(`/api/chats/${chatId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ action, actorId }),
   });
 }
 
