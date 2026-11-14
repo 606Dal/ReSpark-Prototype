@@ -3,20 +3,31 @@
 글로벌 중고거래 중개 플랫폼 **ReSpark**의 Stage 1 기능형 프로토타입입니다.  
 디자인팀 검토와 사용자 흐름 시연을 위해 Next.js App Router + TypeScript + Tailwind로 화면과 Mock API를 제공합니다.
 
+### 🚀 프로토타입 바로가기
+
+**[ReSpark 프로토타입 체험하기](https://re-spark-prototype.vercel.app/)**
+
+- **배포 플랫폼:** Vercel
+- **배포 URL:** https://re-spark-prototype.vercel.app/
+- **개발 단계:** Stage 1 — Prototype
+- **데모 계정:** 아래 '데모 계정' 섹션 참고
+
 > **Stage 1에서 하지 않는 것:** MySQL, MongoDB, Kafka, Spring Boot, Docker, 실제 결제 PG, 실제 OAuth, AWS, 실번역 API, WebSocket.
 
 관련 문서:
 
-- `FEATURE_GAP_ANALYSIS.md` — 107기능 갭 분석 (요구사항 v2 우선)
-- `SCREEN_MAPPING.md` — 화면·URL 매핑
-- `DESIGN_SCREEN_CHECKLIST.md` — 디자인 검토 체크리스트
-- `STAGE1_IMPLEMENTATION_REPORT.md` — 구현 보고
+- docs/`FEATURE_GAP_ANALYSIS.md` — 107기능 갭 분석 (요구사항 v2 우선)
+- docs/`SCREEN_MAPPING.md` — 화면·URL 매핑
+- docs/`DESIGN_SCREEN_CHECKLIST.md` — 디자인 검토 체크리스트
+- docs/`STAGE1_IMPLEMENTATION_REPORT.md` — 구현 보고
 
 ---
 
-## Windows 10 실행 방법
+## 💻 로컬 개발 환경 실행
 
-프로젝트 폴더에서:
+Node.js와 npm이 설치된 Windows, macOS, Linux 환경에서 실행할 수 있습니다.
+
+### 실행 방법
 
 ```bash
 npm install
