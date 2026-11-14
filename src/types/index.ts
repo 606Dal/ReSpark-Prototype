@@ -1,4 +1,4 @@
-/** ReSpark domain types — aligned with ReSpark_SQL.pdf column structure */
+/** ReSpark domain types — aligned with ReSparkSQL_Last.pdf (+ Stage 1 mock fields) */
 
 export type UserStatus = "ACTIVE" | "SUSPENDED" | "BANNED" | "WITHDRAWN" | "DORMANT";
 export type ProductStatus = "ON_SALE" | "RESERVED" | "SOLD";
@@ -60,9 +60,11 @@ export interface ProductMedia {
 
 export interface Product {
   id: number;
+  productUuid?: string;
   userUuid: string;
   title: string;
   description: string;
+  /** Requirements v2: USD 0–100 (C-04 vs SQL BIGINT noted in gap analysis) */
   price: number;
   status: ProductStatus;
   deliveryFee: boolean;
@@ -76,6 +78,9 @@ export interface Product {
   media: ProductMedia[];
   sellerNickname: string;
   sellerUuid: string;
+  sellerRatingAvg?: number;
+  sellerReviewCount?: number;
+  sellerTradeCount?: number;
 }
 
 export interface Destination {
@@ -128,10 +133,16 @@ export interface Purchase {
 export interface ChatRoom {
   id: number;
   productId: number;
+  buyerId: number;
+  sellerId: number;
   lastMessageAt: string | null;
   productTitle: string;
   counterpartNickname: string;
   lastMessagePreview: string;
+  unreadCount: number;
+  purchaseRequested: boolean;
+  purchaseAccepted: boolean;
+  deleted: boolean;
 }
 
 export interface ChatMessage {
@@ -143,6 +154,10 @@ export interface ChatMessage {
   messageType: MessageType;
   sentAt: string;
   warningType: string | null;
+  meta?: {
+    action?: "PURCHASE_REQUEST" | "ACCEPT" | "PAY_LINK" | "WARNING";
+    productId?: number;
+  };
 }
 
 export interface Payment {
@@ -165,7 +180,9 @@ export interface Notice {
   title: string;
   content: string;
   published: boolean;
+  fixed?: boolean;
   createdAt: string;
+  author?: string;
 }
 
 export interface FaqItem {
@@ -174,6 +191,8 @@ export interface FaqItem {
   answer: string;
   sortOrder: number;
   isVisible: boolean;
+  category?: string;
+  author?: string;
 }
 
 export interface Inquiry {
@@ -183,12 +202,20 @@ export interface Inquiry {
   inquiredAt: string;
   description: string;
   status: InquiryStatus;
+  category?: string;
+  title?: string;
+  answer?: string | null;
+  answeredAt?: string | null;
 }
+
+export type ReportTargetType = "PRODUCT" | "USER" | "REVIEW" | "CHAT";
 
 export interface Report {
   id: number;
   reporterId: number;
   targetUserId: number;
+  targetType: ReportTargetType;
+  targetUuid: string;
   reportedAt: string;
   description: string;
   status: ReportStatus;
@@ -214,6 +241,7 @@ export interface Review {
   id: number;
   tradeId: number;
   userId: number;
+  productId: number;
   rating: number;
   content: string | null;
   createdAt: string;
@@ -225,4 +253,58 @@ export interface AuthSession {
   user: User;
   token: string;
   mock: true;
+}
+
+export interface RestrictionItem {
+  id: number;
+  userUuid: string;
+  restrictedAt: string;
+  releasedAt: string | null;
+  durationLabel: string;
+  reason: string;
+}
+
+export interface NotificationItem {
+  id: number;
+  userUuid: string;
+  type: "PRICE_DROP" | "CHAT" | "TRADE" | "MARKETING" | "SYSTEM";
+  title: string;
+  body: string;
+  read: boolean;
+  sentAt: string;
+}
+
+export interface BoardConfig {
+  id: number;
+  boardName: string;
+  category: string;
+  userWriteEnable: boolean;
+  fixedEnable: boolean;
+  reservationEnable: boolean;
+  mediaEnable: boolean;
+  used: boolean;
+}
+
+export interface AlarmTemplate {
+  id: number;
+  type: string;
+  title: string;
+  body: string;
+}
+
+export interface TermsDoc {
+  id: number;
+  title: string;
+  version: string;
+  content: string;
+  required: boolean;
+}
+
+export interface PurchaseExtra {
+  buyerAddress?: string;
+  customsCode?: string;
+  membershipTf?: boolean;
+  settlementStatus?: SettlementStatus | null;
+  feeAmount?: number;
+  netAmount?: number;
 }

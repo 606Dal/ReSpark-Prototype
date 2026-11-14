@@ -73,16 +73,25 @@ export const MOCK_PASSWORDS: Record<string, string> = {
   "admin@respark.test": "admin1234",
 };
 
+/** Requirements v2: depth1 item type, depth2 country */
 export const MOCK_CATEGORIES: Category[] = [
-  { id: 1, categoryParentId: null, depth: 1, name: "Electronics", deleted: false },
-  { id: 2, categoryParentId: 1, depth: 2, name: "Phones", deleted: false },
-  { id: 3, categoryParentId: 1, depth: 2, name: "Cameras", deleted: false },
-  { id: 4, categoryParentId: null, depth: 1, name: "Fashion", deleted: false },
-  { id: 5, categoryParentId: 4, depth: 2, name: "Bags", deleted: false },
-  { id: 6, categoryParentId: null, depth: 1, name: "Home", deleted: false },
-  { id: 7, categoryParentId: 6, depth: 2, name: "Kitchen", deleted: false },
-  { id: 8, categoryParentId: null, depth: 1, name: "Hobby", deleted: false },
-  { id: 9, categoryParentId: 8, depth: 2, name: "Games", deleted: false },
+  { id: 1, categoryParentId: null, depth: 1, name: "Figure", deleted: false },
+  { id: 2, categoryParentId: null, depth: 1, name: "Plamodel", deleted: false },
+  { id: 3, categoryParentId: null, depth: 1, name: "TCG", deleted: false },
+  { id: 4, categoryParentId: null, depth: 1, name: "Lego", deleted: false },
+  { id: 5, categoryParentId: null, depth: 1, name: "Art Toy", deleted: false },
+  { id: 6, categoryParentId: null, depth: 1, name: "Doll", deleted: false },
+  { id: 7, categoryParentId: null, depth: 1, name: "Squishy / Fidget", deleted: false },
+  { id: 11, categoryParentId: 1, depth: 2, name: "Japan", deleted: false },
+  { id: 12, categoryParentId: 1, depth: 2, name: "China", deleted: false },
+  { id: 13, categoryParentId: 1, depth: 2, name: "Taiwan", deleted: false },
+  { id: 14, categoryParentId: 1, depth: 2, name: "USA", deleted: false },
+  { id: 15, categoryParentId: 2, depth: 2, name: "Japan", deleted: false },
+  { id: 16, categoryParentId: 3, depth: 2, name: "USA", deleted: false },
+  { id: 17, categoryParentId: 4, depth: 2, name: "Denmark", deleted: false },
+  { id: 18, categoryParentId: 5, depth: 2, name: "China", deleted: false },
+  { id: 19, categoryParentId: 6, depth: 2, name: "Germany", deleted: false },
+  { id: 20, categoryParentId: 7, depth: 2, name: "Czech", deleted: false },
 ];
 
 const media = (
@@ -100,21 +109,22 @@ const media = (
   fileType: "IMAGE",
   fileName: `/mock/${label}.jpg`,
   fileSize: 240_000,
-  url: `https://picsum.photos/seed/respark-${productId}-${id}/640/640`,
+  // Local SVG demos — picsum.photos was unreliable (timeouts / blocked network).
+  url: `/products/p-${productId}.svg`,
 });
 
 export const MOCK_PRODUCTS: Product[] = [
   {
     id: 101,
     userUuid: "22222222-2222-2222-2222-222222222222",
-    title: "Sony A7C II Mirrorless Body",
+    title: "Nendoroid Limited Figure Set",
     description:
       "Lightly used A7C II body only. Shutter count under 3k. Box and strap included. Ships from Tokyo.",
-    price: 1499,
+    price: 95,
     status: "ON_SALE",
     deliveryFee: true,
     deleted: false,
-    categoryIds: [3],
+    categoryIds: [1, 11],
     country: "JP",
     condition: "USED_A",
     viewCount: 1284,
@@ -127,14 +137,14 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 102,
     userUuid: "22222222-2222-2222-2222-222222222222",
-    title: "iPhone 15 Pro 256GB Blue",
+    title: "Pokemon TCG Booster Box (sealed)",
     description:
       "Battery health 94%. Always used with case and glass. Original box and cable included.",
-    price: 820,
+    price: 88,
     status: "ON_SALE",
     deliveryFee: false,
     deleted: false,
-    categoryIds: [2],
+    categoryIds: [3, 16],
     country: "KR",
     condition: "USED_S",
     viewCount: 2103,
@@ -147,14 +157,14 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 103,
     userUuid: "22222222-2222-2222-2222-222222222222",
-    title: "Coach Tabby Shoulder Bag",
+    title: "BJD Doll Outfit Bundle",
     description:
       "Authentic Coach bag purchased in NYC. Minor corner wear. Dust bag included.",
-    price: 210,
+    price: 42,
     status: "RESERVED",
     deliveryFee: true,
     deleted: false,
-    categoryIds: [5],
+    categoryIds: [6, 19],
     country: "US",
     condition: "USED_B",
     viewCount: 540,
@@ -167,14 +177,14 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 104,
     userUuid: "44444444-4444-4444-4444-444444444444",
-    title: "Nintendo Switch OLED White",
+    title: "Lego Creator Expert Set",
     description:
       "Console + dock + joy-cons. Perfect for travel. No games included.",
-    price: 260,
+    price: 55,
     status: "ON_SALE",
     deliveryFee: true,
     deleted: false,
-    categoryIds: [9],
+    categoryIds: [4, 17],
     country: "JP",
     condition: "USED_A",
     viewCount: 890,
@@ -187,14 +197,14 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 105,
     userUuid: "22222222-2222-2222-2222-222222222222",
-    title: "Le Creuset Dutch Oven 24cm",
+    title: "Pop Mart Blind Box Lot",
     description:
       "Flame orange cast iron pot. Barely used. Heavy item — shipping fee separate.",
-    price: 180,
+    price: 36,
     status: "SOLD",
     deliveryFee: false,
     deleted: false,
-    categoryIds: [7],
+    categoryIds: [5, 18],
     country: "FR",
     condition: "USED_S",
     viewCount: 402,
@@ -207,14 +217,14 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 106,
     userUuid: "22222222-2222-2222-2222-222222222222",
-    title: "Dyson Airwrap Complete Long",
+    title: "Squishy Fidget Pack (10pcs)",
     description:
       "Full set with all barrels. Purchased 2025. Works perfectly, smoke-free home.",
-    price: 390,
+    price: 72,
     status: "ON_SALE",
     deliveryFee: true,
     deleted: false,
-    categoryIds: [1],
+    categoryIds: [7, 20],
     country: "KR",
     condition: "USED_A",
     viewCount: 1550,
@@ -302,10 +312,16 @@ export const MOCK_CHATS: ChatRoom[] = [
   {
     id: 1,
     productId: 101,
+    buyerId: 1,
+    sellerId: 2,
     lastMessageAt: "2026-11-07T03:10:00Z",
-    productTitle: "Sony A7C II Mirrorless Body",
+    productTitle: "Nendoroid Limited Figure Set",
     counterpartNickname: "KenSeller",
     lastMessagePreview: "Yes, I can ship tomorrow.",
+    unreadCount: 1,
+    purchaseRequested: false,
+    purchaseAccepted: false,
+    deleted: false,
   },
 ];
 
@@ -387,6 +403,8 @@ export const MOCK_FAQ: FaqItem[] = [
       "Sellers set a return address and buyers provide a customs code on checkout. Couriers are selected after payment confirmation.",
     sortOrder: 1,
     isVisible: true,
+    category: "Shipping",
+    author: "admin",
   },
   {
     id: 2,
@@ -395,6 +413,8 @@ export const MOCK_FAQ: FaqItem[] = [
       "After buyer confirmation (or auto-confirm 5 days after delivery), settlement is requested. In production this is escrow-based.",
     sortOrder: 2,
     isVisible: true,
+    category: "Settlement",
+    author: "admin",
   },
   {
     id: 3,
@@ -403,6 +423,8 @@ export const MOCK_FAQ: FaqItem[] = [
       "Yes. Provide a cancel reason (10+ characters). If the seller does not respond for 3 days, cancel is auto-approved.",
     sortOrder: 3,
     isVisible: true,
+    category: "Trade",
+    author: "admin",
   },
 ];
 
@@ -422,11 +444,155 @@ export const MOCK_REPORTS: Report[] = [
     id: 1,
     reporterId: 1,
     targetUserId: 4,
+    targetType: "USER",
+    targetUuid: "44444444-4444-4444-4444-444444444444",
     reportedAt: "2026-10-18T12:00:00Z",
     description: "Asked to pay outside the app via bank transfer.",
     status: "RESOLVED",
     reportCategory: "EXTERNAL_PAYMENT",
   },
+];
+
+export const MOCK_RESTRICTIONS = [
+  {
+    id: 1,
+    userUuid: "44444444-4444-4444-4444-444444444444",
+    restrictedAt: "2026-10-19T00:00:00Z",
+    releasedAt: "2026-10-22T00:00:00Z",
+    durationLabel: "3 days",
+    reason: "External payment solicitation (report accepted)",
+  },
+];
+
+export const MOCK_NOTIFICATIONS = [
+  {
+    id: 1,
+    userUuid: "11111111-1111-1111-1111-111111111111",
+    type: "PRICE_DROP" as const,
+    title: "Price drop",
+    body: "A wishlisted item dropped in price (mock).",
+    read: false,
+    sentAt: "2026-11-07T04:00:00Z",
+  },
+  {
+    id: 2,
+    userUuid: "11111111-1111-1111-1111-111111111111",
+    type: "CHAT" as const,
+    title: "New chat message",
+    body: "KenSeller replied in your chat.",
+    read: false,
+    sentAt: "2026-11-07T03:10:00Z",
+  },
+];
+
+export const MOCK_REVIEWS = [
+  {
+    id: 1,
+    tradeId: 1,
+    userId: 1,
+    productId: 105,
+    rating: 5,
+    content: "Fast shipping and item as described.",
+    createdAt: "2026-09-27T10:00:00Z",
+    productTitle: "Pop Mart Blind Box Lot",
+    authorNickname: "MinaBuyer",
+  },
+  {
+    id: 2,
+    tradeId: 2,
+    userId: 1,
+    productId: 103,
+    rating: 4,
+    content: "Good condition. Packaging was careful.",
+    createdAt: "2026-10-12T08:00:00Z",
+    productTitle: "BJD Doll Outfit Bundle",
+    authorNickname: "MinaBuyer",
+  },
+  {
+    id: 3,
+    tradeId: 0,
+    userId: 4,
+    productId: 101,
+    rating: 5,
+    content: "Nendoroid looks brand new. Highly recommend this seller.",
+    createdAt: "2026-11-01T12:00:00Z",
+    productTitle: "Nendoroid Limited Figure Set",
+    authorNickname: "TokyoShop",
+  },
+  {
+    id: 4,
+    tradeId: 0,
+    userId: 1,
+    productId: 101,
+    rating: 4,
+    content: "Nice figure set. Delivery took a bit longer than expected.",
+    createdAt: "2026-11-05T09:30:00Z",
+    productTitle: "Nendoroid Limited Figure Set",
+    authorNickname: "MinaBuyer",
+  },
+];
+
+export const MOCK_TERMS = [
+  {
+    id: 1,
+    title: "Terms of Service",
+    version: "2026.11",
+    content: "Mock terms of service for ReSpark Stage 1 prototype.",
+    required: true,
+  },
+  {
+    id: 2,
+    title: "Privacy Policy",
+    version: "2026.11",
+    content: "Mock privacy policy. Personal data handling is simulated only.",
+    required: true,
+  },
+];
+
+export const MOCK_BOARDS = [
+  {
+    id: 1,
+    boardName: "Notice",
+    category: "NOTICE",
+    userWriteEnable: false,
+    fixedEnable: true,
+    reservationEnable: true,
+    mediaEnable: true,
+    used: true,
+  },
+  {
+    id: 2,
+    boardName: "Inquiry",
+    category: "INQUIRY",
+    userWriteEnable: true,
+    fixedEnable: false,
+    reservationEnable: false,
+    mediaEnable: true,
+    used: true,
+  },
+];
+
+export const MOCK_ALARM_TEMPLATES = [
+  {
+    id: 1,
+    type: "PRICE_DROP",
+    title: "Price drop alert",
+    body: "A wishlisted product price has changed.",
+  },
+  {
+    id: 2,
+    type: "TRADE",
+    title: "Trade update",
+    body: "Your trade status has been updated.",
+  },
+];
+
+export const MOCK_PROHIBITED = [
+  "Flammable / hazardous materials",
+  "Weapons (guns, knives, etc.)",
+  "Currency and securities",
+  "Medicines / pharmaceuticals",
+  "Food items",
 ];
 
 export const MOCK_SETTLEMENTS: Settlement[] = [

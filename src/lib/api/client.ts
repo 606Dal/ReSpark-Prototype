@@ -1,14 +1,7 @@
 import type { ApiResponse } from "@/types";
+import { getApiBaseUrl, getApiMode } from "./config";
 
-const DEFAULT_BASE = "";
-
-/**
- * Central HTTP client.
- * Stage 2: point NEXT_PUBLIC_API_BASE_URL at Spring API Gateway.
- */
-export function getApiBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? DEFAULT_BASE;
-}
+export { getApiBaseUrl, getApiMode };
 
 export class ApiError extends Error {
   status: number;
