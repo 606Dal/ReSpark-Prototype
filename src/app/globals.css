@@ -73,6 +73,20 @@ a {
   transform: translateY(0);
 }
 
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:focus-visible,
+.input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
 .btn-primary {
   background: var(--brand);
   color: white;
