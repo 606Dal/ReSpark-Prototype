@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchAdminMembers } from "@/lib/api/admin";
 import { formatDate } from "@/lib/format";
@@ -32,6 +33,7 @@ export default function AdminMembersPage() {
               <th className="px-3 py-2">Role</th>
               <th className="px-3 py-2">Reports</th>
               <th className="px-3 py-2">Joined</th>
+              <th className="px-3 py-2">Detail</th>
             </tr>
           </thead>
           <tbody>
@@ -43,6 +45,11 @@ export default function AdminMembersPage() {
                 <td className="px-3 py-2">{m.role}</td>
                 <td className="px-3 py-2">{m.reportCount}</td>
                 <td className="px-3 py-2">{formatDate(m.createdAt)}</td>
+                <td className="px-3 py-2">
+                  <Link href={`/admin/members/${m.id}`} className="text-brand underline">
+                    Open
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>

@@ -32,6 +32,7 @@ export default function AdminSettlementsPage() {
               <th className="px-3 py-2">Net</th>
               <th className="px-3 py-2">Status</th>
               <th className="px-3 py-2">Requested</th>
+              <th className="px-3 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -43,6 +44,36 @@ export default function AdminSettlementsPage() {
                 <td className="px-3 py-2">{formatUsd(s.netAmount)}</td>
                 <td className="px-3 py-2">{s.status}</td>
                 <td className="px-3 py-2">{formatDate(s.requestedAt)}</td>
+                <td className="px-3 py-2 space-x-1 whitespace-nowrap">
+                  <button
+                    className="btn btn-ghost px-2 py-1 text-xs"
+                    onClick={async () => {
+                      await fetch(`/api/admin/settlements/${s.id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ action: "request" }),
+                      });
+                      const res = await fetchAdminSettlements();
+                      setItems(res.data);
+                    }}
+                  >
+                    Request
+                  </button>
+                  <button
+                    className="btn btn-ghost px-2 py-1 text-xs text-rose-700"
+                    onClick={async () => {
+                      await fetch(`/api/admin/settlements/${s.id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ action: "cancel" }),
+                      });
+                      const res = await fetchAdminSettlements();
+                      setItems(res.data);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

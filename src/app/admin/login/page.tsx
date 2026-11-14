@@ -1,16 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { MockBadge } from "@/components/common/MockBadge";
+import { useI18n } from "@/components/providers/LocaleProvider";
 import { login } from "@/lib/api/auth";
 import { saveSession } from "@/lib/auth/session";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const { t, setLocale } = useI18n();
   const [email, setEmail] = useState("admin@respark.test");
   const [password, setPassword] = useState("admin1234");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setLocale("ko");
+  }, [setLocale]);
 
   return (
     <div className="grid min-h-screen place-items-center bg-[#10241c] px-4">
@@ -22,35 +28,37 @@ export default function AdminLoginPage() {
           try {
             const res = await login(email, password);
             if (res.data.user.role !== "ADMIN") {
-              setError("Admin role required.");
+              setError("관리자 권한이 필요합니다.");
               return;
             }
             saveSession(res.data);
             router.push("/admin");
           } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed");
+            setError(err instanceof Error ? err.message : t("common.error"));
           }
         }}
       >
         <div className="flex items-center gap-2">
-          <h1 className="display text-2xl font-bold">Admin login</h1>
+          <h1 className="display text-2xl font-bold">{t("admin.title")} 로그인</h1>
           <MockBadge />
         </div>
         <label className="block space-y-1 text-sm">
-          <span className="font-semibold">Email</span>
-          <input className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <span className="font-semibold">{t("auth.email")}</span>
+          <input className="input h-11" value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
         <label className="block space-y-1 text-sm">
-          <span className="font-semibold">Password</span>
+          <span className="font-semibold">{t("auth.password")}</span>
           <input
-            className="input"
+            className="input h-11"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
         {error && <p className="text-sm text-rose-700">{error}</p>}
-        <button className="btn btn-primary w-full">Enter console</button>
+        <button className="btn btn-primary h-11 w-full" type="submit">
+          {t("nav.login")}
+        </button>
         <p className="text-xs text-muted">admin@respark.test / admin1234</p>
       </form>
     </div>
